@@ -8,7 +8,7 @@
   <h1>Questions and Answers</h1>
 </header>
 <main>
-  <form id="question-form" onsubmit="submitQuestion">
+  <form id="question-form">
     <input type="textarea" name="question" placeholder="Ask a question here">
     <input type="submit" name="submit-question" value="Post Question">
   </form>
@@ -17,11 +17,8 @@
   </div>
 </main>
 
-<script src="/static/main.js"></script>
-</body>
-
 <template id="question-template">
-<div class="question">
+  <div class="question">
   <p class="question-text">Question Text</p>
   <span class="upvote-button">[^]</span><p class="upvotes"></p>
   <div class="comment-container">
@@ -33,12 +30,15 @@
       <input type="submit" name="submit-comment" value="Post Comment">
     </form>
   </div>
-</div>
+  </div>
 </template>
 
 <template id="comment-template">
-<div class="comment">
+  <div class="comment">
   <p>Comment Text</p>
-</div>
+  </div>
 </template>
+
+<script src="/static/main.js"></script>
+</body>
 </html>
