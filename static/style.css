@@ -17,6 +17,12 @@ main {
 
 #question-form input[type="textarea"] {
   line-height: 4;
-  width: 60%;
+  width: 100%;
   text-anchor: start;
+
+}
+
+.question-text {
+  margin: 1em;
+  text-anchor: middle;
 }

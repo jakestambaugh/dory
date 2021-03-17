@@ -113,5 +113,5 @@ window.onload = function() {
     loadQuestions();
 
     // Reload all questions every 30s
-    // window.setInterval(loadQuestions, 30000);
+    window.setInterval(loadQuestions, 30000);
 }
