@@ -5,6 +5,7 @@ from flask import (
     send_file
 )
 from google.cloud import datastore
+from datetime.datetime import now
 
 app = Flask(__name__)
 datastore_client = datastore.Client()
@@ -17,6 +18,7 @@ def home():
 @app.route("/question", methods=["GET"])
 def list_questions():
     q = datastore_client.query(kind="Question")
+    q.order("creation_time")
     questions = q.fetch()
 
     x = [ {"id": i.id, "text": i["text"], "upvotes": i["upvotes"]} for i in questions]
@@ -31,6 +33,7 @@ def store_question():
     question = datastore.Entity(key=question_key)
     question["text"] = question_text
     question["upvotes"] = 0
+    question["creation_time"] = now()
     datastore_client.put(question)
 
     return jsonify(question)
@@ -52,10 +55,12 @@ def show_comments(question_id):
     question_key = datastore_client.key("Question", question_id)
 
     q = datastore_client.query(kind="Comment")
-    q.add_filter("question_id", "=", question_key)
+    q.add_filter("question_key", "=", question_key)
+    q.order("creation_time")
     comments = q.fetch()
+    output = [{ "text": x["text"] } for x in comments]
 
-    return jsonify(list(comments))
+    return jsonify(output)
 
 
 @app.route("/question/<int:question_id>/comment", methods=["POST"])
@@ -66,9 +71,12 @@ def store_comment(question_id):
     comment_key = datastore_client.key("Comment")
     comment = datastore.Entity(key=comment_key)
     comment["text"] = comment_text
+    comment["question_key"] = question_key
+    comment["upvotes"] = 0
+    comment["creation_time"] = now()
     datastore_client.put(comment)
 
-    return jsonify(comment)
+    return jsonify({ "text": comment["text"] })
 
 
 @app.route("/question/<int:question_id>/comment/<int:comment_id>", methods=["PATCH"])
