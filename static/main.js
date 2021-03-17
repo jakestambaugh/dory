@@ -31,7 +31,6 @@ function loadQuestions() {
         .then(data => {
             console.log(data);
             renderQuestions(data);
-            let ids = data.map(q => q["id"]);
         });
 }
 

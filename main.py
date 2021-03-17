@@ -19,7 +19,8 @@ def list_questions():
     q = datastore_client.query(kind="Question")
     questions = q.fetch()
 
-    return jsonify(list(questions))
+    x = [ {"id": i.id, "text": i["text"], "upvotes": i["upvotes"]} for i in questions]
+    return jsonify(x)
 
 
 @app.route("/question", methods=["POST"])
