@@ -1,0 +1,30 @@
+body {
+  margin: 0 auto;
+  max-width: 50em;
+  background-color: rgb(255, 255, 232);
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 1.3rem;
+}
+
+h1 {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+form {
+  width: 20em;
+  margin: auto;
+}
+
+form label {
+  display: block;
+}
+
+form input {
+  display: block;
+  width: 30em;
+} 
+
+main {
+  margin-top: 5em;
+}
