@@ -1,0 +1,44 @@
+<html>
+<head>
+    <title>Dory</title>
+    <link href="/static/style.css" rel="stylesheet"></link>
+</head>
+<body>
+<header>
+  <h1>Questions and Answers</h1>
+</header>
+<main>
+  <form id="question-form" onsubmit="submitQuestion">
+    <input type="textarea" name="question" placeholder="Ask a question here">
+    <input type="submit" name="submit-question" value="Post Question">
+  </form>
+
+  <div id="question-container">
+  </div>
+</main>
+
+<script src="/static/main.js"></script>
+</body>
+
+<template id="question-template">
+<div class="question">
+  <p class="question-text">Question Text</p>
+  <span class="upvote-button">[^]</span><p class="upvotes"></p>
+  <div class="comment-container">
+  </div>
+  <div class="comment-box">
+    <form onsubmit="submitComment">
+      <input type="hidden" name="question-id">
+      <input type="textarea" name="comment" placeholder="Leave a comment here">
+      <input type="submit" name="submit-comment" value="Post Comment">
+    </form>
+  </div>
+</div>
+</template>
+
+<template id="comment-template">
+<div class="comment">
+  <p>Comment Text</p>
+</div>
+</template>
+</html>

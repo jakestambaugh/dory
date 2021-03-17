@@ -1,4 +1,4 @@
-# Flask on App Engine scaffold 
+# Dory
 
 This repository can be used as the basis for a Flask app with authentication.
 

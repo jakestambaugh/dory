@@ -1,73 +1,85 @@
 from flask import (
     Flask,
-    Response,
-    abort,
-    render_template,
     request,
     jsonify,
-    redirect,
-    session,
+    send_file
 )
 from google.cloud import datastore
-import json
-
-from auth import blueprint as auth_blueprint
-from calculate import calculate as calc
 
 app = Flask(__name__)
-app.secret_key = b"20072012f35b38f51c782e21b478395891bb6be23a61d70a"
-
-app.register_blueprint(auth_blueprint, url_prefix="/auth")
-
 datastore_client = datastore.Client()
 
 @app.route("/")
-def root():
-    """Generate the homepage
+def home():
+    return send_file("static/index.html")
+    
 
-    The render_template function reads an HTML file from the "templates"
-    directory and fills in any variables.
-    """
-    user = get_user()
-    return render_template("index.html", homepage=True, user=user)
+@app.route("/question", methods=["GET"])
+def list_questions():
+    q = datastore_client.query(kind="Question")
+    questions = q.fetch()
 
-
-@app.route("/calculate", methods=["POST"])
-def calculate():
-    """Reads a formula submitted by the user and shows the results
-    """
-    formula = request.form.get("formula")
-    result = calc(formula)
-    return render_template("formula_results.html", formula=formula, result=result)
+    return jsonify(list(questions))
 
 
-@app.route("/favorites", methods=["POST"])
-def favorite():
-    user = get_user()
-    if not user:
-        redirect('/')
-    fave_key = datastore_client.key("Favorite")
-    fave = datastore.Entity(key=fave_key)
-    fave["owner"] = user
-    fave["formula"] = request.form.get("formula")
-    fave["result"] = request.form.get("result")
-    fave["note"] = request.form.get("note")
-    datastore_client.put(fave)
-    return redirect("/favorites")
+@app.route("/question", methods=["POST"])
+def store_question():
+    question_text = request.form.get("question")
 
-@app.route("/favorites", methods=["GET"])
-def show_faves():
-    user = get_user()
-    q = datastore_client.query(kind="Favorite")
-    q.add_filter("owner", "=", user)
-    faves = q.fetch()
-    return render_template("favorites.html", faves=faves)
+    question_key = datastore_client.key("Question")
+    question = datastore.Entity(key=question_key)
+    question["text"] = question_text
+    question["upvotes"] = 0
+    datastore_client.put(question)
 
-def get_user():
-    """If our session has an identified user (i.e., a user is signed in), then
-    return that username."""
-    return session.get("user", None)
+    return jsonify(question)
+
+
+@app.route("/question/<int:question_id>", methods=["PATCH"])
+def upvote_question(question_id):
+    question_key = datastore_client.key("Question", question_id)
+    question = datastore_client.get(question_key)
+
+    question["upvotes"] = question["upvotes"] + int(request.form.get("upvotes"))
+    datastore_client.put(question)
+    
+    return jsonify(question)
+
+    
+@app.route("/question/<int:question_id>/comment", methods=["GET"])
+def show_comments(question_id):
+    question_key = datastore_client.key("Question", question_id)
+
+    q = datastore_client.query(kind="Comment")
+    q.add_filter("question_id", "=", question_key)
+    comments = q.fetch()
+
+    return jsonify(list(comments))
+
+
+@app.route("/question/<int:question_id>/comment", methods=["POST"])
+def store_comment(question_id):
+    comment_text = request.form.get("comment")
+
+    question_key = datastore_client.key("Question", question_id)
+    comment_key = datastore_client.key("Comment")
+    comment = datastore.Entity(key=comment_key)
+    comment["text"] = comment_text
+    datastore_client.put(comment)
+
+    return jsonify(comment)
+
+
+@app.route("/question/<int:question_id>/comment/<int:comment_id>", methods=["PATCH"])
+def upvote_comment(question_id, comment_id):
+    comment_key = datastore_client.key("Comment", comment_id)
+    comment = datastore_client.get(comment_key)
+    
+    comment["upvotes"] = request.form.get("upvotes")
+    datastore_client.put(comment)
+
+    return jsonify(comment)
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8080, debug=True)
+    app.run(host="127.0.0.1", port=5000, debug=True)
