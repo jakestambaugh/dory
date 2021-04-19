@@ -1,3 +1,7 @@
+console.log("Hello");
+import ReactDOM from "react-dom";
+import App from "static/App";
+
 function renderQuestion(q) {
   let existing = document.getElementById(`question-${q["id"]}`);
   if (existing === null) {
@@ -111,6 +115,12 @@ function submitCommentBuilder(questionId) {
 }
 
 window.onload = function () {
+  console.log("Before render");
+  const root = root.getElementById("root");
+  console.log(root);
+  ReactDOM.render(<App />, root);
+  console.log("After render");
+
   const form = document.getElementById("question-form");
   form.addEventListener("submit", submitQuestion);
   loadQuestions();

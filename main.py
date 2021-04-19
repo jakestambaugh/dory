@@ -10,11 +10,6 @@ from datetime import datetime
 app = Flask(__name__)
 datastore_client = datastore.Client()
 
-@app.route("/")
-def home():
-    return send_file("static/index.html")
-    
-
 @app.route("/question", methods=["GET"])
 def list_questions():
     q = datastore_client.query(kind="Question")
@@ -89,6 +84,10 @@ def upvote_comment(question_id, comment_id):
 
     return jsonify(comment)
 
+@app.route("/")
+def home():
+    return send_file("static/index.html")
+    
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)
