@@ -5,7 +5,7 @@ class Comment extends React.Component {
     return (
       <div class="comment row">
         <div class="col-3"></div>
-        <p class="col-9 border border-primary">Comment Text</p>
+        <p class="col-9 border border-primary">{this.props.text}</p>
       </div>
     );
   }

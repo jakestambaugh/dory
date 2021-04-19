@@ -12,12 +12,10 @@ class Question extends React.Component {
     fetch(`/question/${this.props.id}/comment`)
       .then((response) => response.json())
       .then((data) => this.setState({ comments: data }));
-    fetch(`/questions/${this.props.id}/upvote`)
-      .then((response) => response.json())
-      .then((data) => this.setState({ upvotes: data }));
   }
 
   render() {
+    const comments = this.state.comments;
     return (
       <div>
         <div>
@@ -36,7 +34,9 @@ class Question extends React.Component {
           </span>
           <h3>{this.props.text}</h3>
         </div>
-        <Comment />
+        {comments.map((c) => (
+          <Comment {...c} />
+        ))}
         <CommentForm id={this.props.id} />
       </div>
     );
