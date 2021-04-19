@@ -33,13 +33,13 @@ class QuestionForm extends React.Component {
         <input
           onChange={this.handleChange}
           type="textarea"
-          class="form-control"
+          className="form-control"
           name="question"
           placeholder="Ask a question here"
           value={this.state.questionText}
         />
         <input
-          class="btn-primary"
+          className="btn-primary"
           type="submit"
           name="submit-question"
           value="Post Question"

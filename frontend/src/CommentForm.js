@@ -25,17 +25,17 @@ class CommentForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} id="comment-form" class="col-9">
+      <form onSubmit={this.handleSubmit} id="comment-form" className="col-9">
         <input
           onChange={this.handleChange}
           type="textarea"
-          class="form-control"
+          className="form-control"
           name="comment"
           placeholder="Leave a comment here"
           value={this.state.commentText}
         />
         <input
-          class="btn btn-secondary"
+          className="btn btn-secondary"
           type="submit"
           name="submit-comment"
           value="Post Comment"
