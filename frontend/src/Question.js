@@ -6,12 +6,24 @@ class Question extends React.Component {
   constructor(props) {
     super(props);
     this.state = { comments: [], upvotes: 0 };
+    this.getAllComments = this.getAllComments.bind(this);
   }
 
-  componentDidMount() {
+  getAllComments = () => {
     fetch(`/question/${this.props.id}/comment`)
       .then((response) => response.json())
-      .then((data) => this.setState({ comments: data }));
+      .then((data) => {
+        this.setState({ comments: data });
+      });
+  };
+
+  componentDidMount() {
+    this.getAllComments();
+    this.timer = setInterval(() => this.getAllComments(), 30000);
+  }
+
+  componentWillUnmount() {
+    this.timer = null;
   }
 
   render() {
@@ -37,7 +49,7 @@ class Question extends React.Component {
         {comments.map((c) => (
           <Comment {...c} />
         ))}
-        <CommentForm id={this.props.id} />
+        <CommentForm id={this.props.id} refreshPage={this.getAllComments} />
       </div>
     );
   }

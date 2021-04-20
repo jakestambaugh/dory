@@ -9,10 +9,13 @@ class QuestionForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  submitQuestion(questionText, callback) {
+  submitQuestion(questionText) {
     let data = new URLSearchParams();
     data.append("question", questionText);
-    fetch("/question", { method: "POST", body: data }).then(callback);
+    fetch("/question", { method: "POST", body: data }).then((_data) => {
+      this.setState({ questionText: "" });
+      this.props.refreshPage();
+    });
   }
 
   handleChange(event) {
@@ -21,10 +24,7 @@ class QuestionForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let callback = (data) => {
-      this.setState({ questionText: "" });
-    };
-    this.submitQuestion(this.state.questionText, callback);
+    this.submitQuestion(this.state.questionText);
   }
 
   render() {

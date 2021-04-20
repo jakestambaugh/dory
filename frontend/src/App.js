@@ -9,12 +9,24 @@ class App extends React.Component {
     this.state = {
       questions: [],
     };
+    this.getAllQuestions = this.getAllQuestions.bind(this);
+  }
+
+  getAllQuestions() {
+    fetch("/question")
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ questions: data });
+      });
   }
 
   componentDidMount() {
-    fetch("/question")
-      .then((response) => response.json())
-      .then((data) => this.setState({ questions: data }));
+    this.getAllQuestions();
+    this.timer = setInterval(this.getAllQuestions, 30000);
+  }
+
+  componentWillUnmount() {
+    this.timer = null;
   }
 
   render() {
@@ -24,7 +36,7 @@ class App extends React.Component {
         <header>
           <h1>Questions and Answers</h1>
         </header>
-        <QuestionForm />
+        <QuestionForm refreshPage={this.getAllQuestions} />
         <div className="question-container">
           {questions.map((q) => (
             <Question {...q} />

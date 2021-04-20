@@ -18,9 +18,10 @@ class CommentForm extends React.Component {
     let data = new URLSearchParams();
     data.append("comment", this.state.commentText);
     let path = `/question/${this.state.id}/comment`;
-    fetch(path, { method: "POST", body: data }).then(
-      this.setState({ commentText: "" })
-    );
+    fetch(path, { method: "POST", body: data }).then((_data) => {
+      this.setState({ commentText: "" });
+      this.props.refreshPage();
+    });
   }
 
   render() {
