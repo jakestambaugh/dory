@@ -10,7 +10,7 @@ class Question extends React.Component {
   }
 
   getAllComments = () => {
-    fetch(`http://cs1520-dory.uc.r.appspot.com/question/${this.props.id}/comment`)
+    fetch(`http://cs1520-dory.uc.r.appspot.com/question/${this.props.id}/comment`, { mode: "no-cors" })
       .then((response) => response.json())
       .then((data) => {
         this.setState({ comments: data });

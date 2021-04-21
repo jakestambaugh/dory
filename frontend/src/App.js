@@ -13,7 +13,7 @@ class App extends React.Component {
   }
 
   getAllQuestions() {
-    fetch("http://cs1520-dory.uc.r.appspot.com/question")
+    fetch("http://cs1520-dory.uc.r.appspot.com/question", { mode: "no-cors" })
       .then((response) => response.json())
       .then((data) => {
         this.setState({ questions: data });

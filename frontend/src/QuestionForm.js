@@ -12,7 +12,7 @@ class QuestionForm extends React.Component {
   submitQuestion(questionText) {
     let data = new URLSearchParams();
     data.append("question", questionText);
-    fetch("http://cs1520-dory.uc.r.appspot.com/question", { method: "POST", body: data }).then((_data) => {
+    fetch("http://cs1520-dory.uc.r.appspot.com/question", { method: "POST", body: data, mode: "no-cors" }).then((_data) => {
       this.setState({ questionText: "" });
       this.props.refreshPage();
     });
@@ -29,7 +29,7 @@ class QuestionForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} id="question-form" class="bg-light">
+      <form onSubmit={this.handleSubmit} id="question-form" className="bg-light">
         <input
           onChange={this.handleChange}
           type="textarea"
