@@ -4,10 +4,12 @@ from flask import (
     jsonify,
     send_file
 )
+from flask_cors import CORS
 from google.cloud import datastore
 from datetime import datetime
 
 app = Flask(__name__)
+CORS(app)
 datastore_client = datastore.Client()
 
 @app.route("/question", methods=["GET"])
