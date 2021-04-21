@@ -13,7 +13,7 @@ class App extends React.Component {
   }
 
   getAllQuestions() {
-    fetch("/question")
+    fetch("http://cs1520-dory.uc.r.appspot.com/question")
       .then((response) => response.json())
       .then((data) => {
         this.setState({ questions: data });
@@ -26,7 +26,7 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
-    this.timer = null;
+    clearInterval(this.timer);
   }
 
   render() {

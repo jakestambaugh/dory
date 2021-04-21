@@ -10,7 +10,7 @@ class Question extends React.Component {
   }
 
   getAllComments = () => {
-    fetch(`/question/${this.props.id}/comment`)
+    fetch(`http://cs1520-dory.uc.r.appspot.com/question/${this.props.id}/comment`)
       .then((response) => response.json())
       .then((data) => {
         this.setState({ comments: data });
@@ -23,7 +23,7 @@ class Question extends React.Component {
   }
 
   componentWillUnmount() {
-    this.timer = null;
+    clearInterval(this.timer);
   }
 
   render() {

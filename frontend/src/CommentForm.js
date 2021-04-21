@@ -17,7 +17,7 @@ class CommentForm extends React.Component {
     event.preventDefault();
     let data = new URLSearchParams();
     data.append("comment", this.state.commentText);
-    let path = `/question/${this.props.id}/comment`;
+    let path = `http://cs1520-dory.uc.r.appspot.com/question/${this.props.id}/comment`;
     fetch(path, { method: "POST", body: data }).then((_data) => {
       this.setState({ commentText: "" });
       this.props.refreshPage();

@@ -12,7 +12,7 @@ class QuestionForm extends React.Component {
   submitQuestion(questionText) {
     let data = new URLSearchParams();
     data.append("question", questionText);
-    fetch("/question", { method: "POST", body: data }).then((_data) => {
+    fetch("http://cs1520-dory.uc.r.appspot.com/question", { method: "POST", body: data }).then((_data) => {
       this.setState({ questionText: "" });
       this.props.refreshPage();
     });
